@@ -1,0 +1,54 @@
+defaults:
+  - _self_
+  - mode: predict
+
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+
+data:
+  nuscenes_root: ${oc.env:NUSCENES_DATAROOT}
+  version: "v1.0-mini"
+  history_seconds: 2
+  future_seconds: 3
+  sampling_frequency: 2  # Hz
+
+model:
+  api_key: ${oc.env:ANTHROPIC_API_KEY}
+  version: "claude-3-opus-20240229"
+  max_tokens: 1000
+  temperature: 0.7
+
+visualization:
+  save_output: true
+  plot_ground_truth: true
+  max_range: 50  # meters
+  colors:
+    trajectory: "#2ecc71"
+    ground_truth: "#e74c3c"
+    vehicle: "#3498db"
+    pedestrian: "#f1c40f"
+    cyclist: "#9b59b6"
+    ego: "#2c3e50"
+
+logging:
+  version: 1
+  disable_existing_loggers: false
+  formatters:
+    standard:
+      format: '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+  handlers:
+    console:
+      class: logging.StreamHandler
+      formatter: standard
+      stream: ext://sys.stdout
+    file:
+      class: logging.FileHandler
+      formatter: standard
+      filename: ${hydra.runtime.output_dir}/emma.log
+  root:
+    level: INFO
+    handlers: [console, file]
