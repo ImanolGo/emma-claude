@@ -124,6 +124,62 @@ Note: Make sure to copy `.env.example` to `.env` and fill in your credentials:
 cp .env.example .env
 ```
 
+## Dataset Setup
+
+This project uses the nuScenes dataset. There are different versions available:
+
+### Dataset Versions
+1. **Full Dataset (v1.0)**
+   - Size: ~400GB
+   - 1000 scenes
+   - 1.4M camera images
+   - Full sensor suite data
+
+2. **Mini Dataset (v1.0-mini)**
+   - Size: ~4GB
+   - 10 scenes
+   - Perfect for testing and development
+   - Contains all the same features as the full dataset
+
+3. **Trainval Dataset (v1.0-trainval)**
+   - Size: ~150GB
+   - 850 scenes
+   - Main training and validation split
+
+### Getting Started with Mini Dataset
+
+For development and testing, we recommend starting with the mini dataset:
+
+1. Create an account at [nuScenes website](https://www.nuscenes.org/nuscenes#download)
+
+2. Option 1: Download using CLI tool
+```bash
+# Install nuscenes-devkit if you haven't already
+pip install nuscenes-devkit
+
+# Download mini dataset
+python -m nusc download --version v1.0-mini --out_dir /path/to/data/directory
+```
+
+3. Option 2: Manual Download
+   - Go to https://www.nuscenes.org/download
+   - Login with your account
+   - Select "Mini" version
+   - Download these files:
+     - `v1.0-mini.tgz` (metadata)
+     - `v1.0-mini-sweep-without-images.tgz` (lidar)
+     - `v1.0-mini-sensor-blobs.tgz` (camera images)
+
+4. After downloading, update your `.env` file with the dataset path:
+```bash
+NUSCENES_DATAROOT=/path/to/data/directory
+```
+
+For example, if you downloaded the dataset to `/home/user/datasets/nuscenes`, your `.env` file should contain:
+```bash
+NUSCENES_DATAROOT=/home/user/datasets/nuscenes
+```
+
 ## Usage
 
 ### Command Line Interface
