@@ -14,24 +14,49 @@ An implementation of EMMA (End-to-End Multimodal Model for Autonomous Driving) u
 
 ## Installation
 
-This project uses `uv` for dependency management. First, install `uv`:
+1. First, install system dependencies and set up the Python environment:
 
 ```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
+# Make the setup script executable
+chmod +x scripts/setup.sh
+
+# Run the setup script
+./scripts/setup.sh
 ```
 
-Then set up the development environment:
-
+2. Copy the environment file and configure your credentials:
 ```bash
-# Clone the repository
-git clone https://github.com/ImanolGo/emma-claude.git
-cd emma-claude
+cp .env.example .env
+```
 
-# Create and activate virtual environment using uv
-uv venv --python 3.12
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+3. Allow direnv:
+```bash
+direnv allow
+```
 
-# Install dependencies
+If you prefer to install dependencies manually:
+
+1. Install system dependencies (Ubuntu/Debian):
+```bash
+sudo apt-get update
+sudo apt-get install -y \
+    build-essential \
+    python3-dev \
+    gcc \
+    pkg-config \
+    libfreetype6-dev \
+    libpng-dev \
+    python3-matplotlib
+```
+
+2. Create and activate virtual environment:
+```bash
+uv venv --python python3.10
+source .venv/bin/activate
+```
+
+3. Install Python dependencies:
+```bash
 uv pip install -r requirements.txt
 uv pip install -r requirements-dev.txt
 ```
