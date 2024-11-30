@@ -24,11 +24,11 @@ Then set up the development environment:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/emma-claude.git
+git clone https://github.com/ImanolGo/emma-claude.git
 cd emma-claude
 
 # Create and activate virtual environment using uv
-uv venv
+uv venv --python 3.12
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 # Install dependencies
@@ -47,6 +47,57 @@ cp .env.example .env
 Required environment variables:
 - `ANTHROPIC_API_KEY`: Your Claude API key
 - `NUSCENES_DATAROOT`: Path to your nuScenes dataset
+
+## Development Environment
+
+This project uses `direnv` to automatically manage environment variables and virtual environments. 
+
+### Prerequisites
+
+1. Install direnv:
+```bash
+# On macOS
+brew install direnv
+
+# On Ubuntu/Debian
+sudo apt-get install direnv
+
+# On Fedora
+sudo dnf install direnv
+```
+
+2. Add direnv hook to your shell configuration:
+
+For bash (`~/.bashrc`):
+```bash
+eval "$(direnv hook bash)"
+```
+
+For zsh (`~/.zshrc`):
+```zsh
+eval "$(direnv hook zsh)"
+```
+
+For fish (`~/.config/fish/config.fish`):
+```fish
+direnv hook fish | source
+```
+
+3. Allow direnv in the project directory:
+```bash
+direnv allow
+```
+
+The included `.envrc` will automatically:
+- Create and activate a Python virtual environment using `uv`
+- Set up the PYTHONPATH
+- Load environment variables from `.env`
+- Configure development paths
+
+Note: Make sure to copy `.env.example` to `.env` and fill in your credentials:
+```bash
+cp .env.example .env
+```
 
 ## Usage
 
