@@ -128,57 +128,49 @@ cp .env.example .env
 
 This project uses the nuScenes dataset. There are different versions available:
 
-### Dataset Versions
-1. **Full Dataset (v1.0)**
-   - Size: ~400GB
-   - 1000 scenes
-   - 1.4M camera images
-   - Full sensor suite data
+## Dataset Setup
 
-2. **Mini Dataset (v1.0-mini)**
-   - Size: ~4GB
-   - 10 scenes
-   - Perfect for testing and development
-   - Contains all the same features as the full dataset
+This project uses the nuScenes image data for autonomous driving predictions. For development and testing, we recommend using the mini dataset (~4GB).
 
-3. **Trainval Dataset (v1.0-trainval)**
-   - Size: ~150GB
-   - 850 scenes
-   - Main training and validation split
+### Required Data Structure
 
-### Getting Started with Mini Dataset
-
-For development and testing, we recommend starting with the mini dataset:
-
-1. Create an account at [nuScenes website](https://www.nuscenes.org/nuscenes#download)
-
-2. Option 1: Download using CLI tool
-```bash
-# Install nuscenes-devkit if you haven't already
-pip install nuscenes-devkit
-
-# Download mini dataset
-python -m nusc download --version v1.0-mini --out_dir /path/to/data/directory
+After downloading, your data directory should look like this:
+```
+/data/sets/nuimages/
+    samples/     - Sensor data for keyframes (annotated images)
+    sweeps/      - Sensor data for intermediate frames (unannotated images)
+    v1.0-mini/   - JSON tables with metadata and annotations
 ```
 
-3. Option 2: Manual Download
-   - Go to https://www.nuscenes.org/download
-   - Login with your account
-   - Select "Mini" version
-   - Download these files:
-     - `v1.0-mini.tgz` (metadata)
-     - `v1.0-mini-sweep-without-images.tgz` (lidar)
-     - `v1.0-mini-sensor-blobs.tgz` (camera images)
+### Setup Instructions
 
-4. After downloading, update your `.env` file with the dataset path:
+1. Create an account at [nuScenes website](https://www.nuscenes.org/nuscenes#download) and accept the Terms of Use.
+
+2. Download the following files for the mini set:
+   - `v1.0-mini` (metadata and annotations)
+   - `samples` (keyframe images)
+   - `sweeps` (intermediate frame images)
+
+3. Extract the archives to your data directory without overwriting folders that occur in multiple archives.
+
+4. Update your `.env` file with the dataset path:
 ```bash
-NUSCENES_DATAROOT=/path/to/data/directory
+NUSCENES_DATAROOT={WORSPACE_DIR}/data/sets/nuimages
 ```
 
-For example, if you downloaded the dataset to `/home/user/datasets/nuscenes`, your `.env` file should contain:
+### Verifying the Installation
+
+Install and test the nuscenes-devkit:
 ```bash
-NUSCENES_DATAROOT=/home/user/datasets/nuscenes
+# Install devkit
+uv pip install nuscenes-devkit
+
+# Verify setup (in python)
+from nuscenes import NuImages
+nusc = NuImages(version='v1.0-mini', dataroot='{WORSPACE_DIR}/data/sets/nuimages', verbose=True, lazy=True)
 ```
+
+Note: While the full nuScenes dataset includes lidar, radar, and map data, this project focuses only on the image data for Claude-based predictions.
 
 ## Usage
 
