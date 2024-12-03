@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')  # Set the backend to non-interactive
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Rectangle, Arrow, Circle, Polygon

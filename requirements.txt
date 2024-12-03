@@ -1,5 +1,5 @@
 # Core dependencies
-anthropic==0.7.0
+anthropic==0.40.0
 numpy==1.24.3
 pillow==10.2.0
 opencv-python==4.8.0.74

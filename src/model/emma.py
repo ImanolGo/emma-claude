@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 import numpy as np
 import json
-import anthropic
+from anthropic import Anthropic
 from tqdm import tqdm
 
 from data.nuscenes_loader import NuScenesLoader
@@ -12,8 +12,8 @@ from utils.geometry import calculate_metrics
 logger = logging.getLogger(__name__)
 
 class ClaudeEMMA:
-    def __init__(self, api_key: str, model_version: str = "claude-3-opus-20240229"):
-        self.client = anthropic.Anthropic(api_key=api_key)
+    def __init__(self, api_key: str, model_version: str = "claude-3-5-sonnet-20241022"):
+        self.client = Anthropic(api_key=api_key)
         self.model_version = model_version
         
         # Load prompts

@@ -1,4 +1,5 @@
 import typer
+import os
 from pathlib import Path
 from typing import Optional
 import logging
@@ -16,25 +17,29 @@ from utils.logger import setup_logger
 app = typer.Typer(help="EMMA-Claude: Autonomous Driving with Claude API")
 console = Console()
 
-def load_config(config_path: str) -> DictConfig:
+def load_config() -> DictConfig:
     """Load configuration from yaml file"""
-    with hydra.initialize(config_path="."):
+    with hydra.initialize(version_base=None, config_path="../../config"):
         cfg = hydra.compose(config_name="config")
     return cfg
 
 @app.command()
 def predict(
     sample_token: str = typer.Argument(..., help="NuScenes sample token to process"),
-    config_path: str = typer.Option("config", help="Path to config directory"),
-    output_dir: Optional[Path] = typer.Option(None, help="Directory to save outputs"),
+    output_dir: Optional[Path] = typer.Option("outputs/debug", help="Directory to save outputs"),
     save_visualization: bool = typer.Option(True, help="Save visualization of predictions"),
 ):
-    """Process a single sample and generate predictions"""
-    # Load config and setup logging
-    cfg = load_config(config_path)
-    setup_logger(cfg.logging)
-    logger = logging.getLogger(__name__)
+    """Process a single samplve and generate predictions"""
+    # Load config and setup logging    
     
+    cfg = load_config()
+    logger = logging.getLogger(__name__)
+
+    console.print(f"Processing sample: {sample_token}")
+    console.print(f"Output directory: {output_dir}")
+    console.print(f"isualizationo: {save_visualization}")
+    console.print(f"Loaded configuration: {OmegaConf.to_yaml(cfg)}")
+
     try:
         # Initialize components
         nusc_loader = NuScenesLoader(
@@ -78,12 +83,12 @@ def predict(
                     save_path=vis_path
                 )
             
-            console.print(f"Results saved to: {output_dir}")
+            logger.info(f"Results saved to: {output_dir}")
         
         # Display results summary
-        console.print("\n[bold]Prediction Summary:[/bold]")
-        console.print(f"Scene Description: {prediction['scene_description']}")
-        console.print(f"Number of critical objects: {len(prediction['critical_objects'])}")
+        logger.info("\n[bold]Prediction Summary:[/bold]")
+        logger.info(f"Scene Description: {prediction['scene_description']}")
+        logger.info(f"Number of critical objects: {len(prediction['critical_objects'])}")
         
     except Exception as e:
         logger.error(f"Error processing sample: {e}", exc_info=True)
@@ -91,15 +96,18 @@ def predict(
 
 @app.command()
 def evaluate(
-    config_path: str = typer.Option("config", help="Path to config directory"),
-    num_samples: int = typer.Option(100, help="Number of samples to evaluate"),
-    output_dir: Optional[Path] = typer.Option(None, help="Directory to save results"),
+    num_samples: int = typer.Option(10, help="Number of samples to evaluate"),
+    output_dir: Optional[Path] = typer.Option("outputs/evaluation", help="Directory to save results"),
 ):
     """Run evaluation on multiple samples"""
     # Load config and setup logging
-    cfg = load_config(config_path)
+    cfg = load_config()
     setup_logger(cfg.logging)
     logger = logging.getLogger(__name__)
+
+    logger.info(f"Evaluating {num_samples} samples")
+    logger.info(f"Output directory: {output_dir}")
+    logger.info(f"Loaded configuration: {OmegaConf.to_yaml(cfg)}")
     
     try:
         # Initialize components
@@ -129,9 +137,9 @@ def evaluate(
                     json.dump(metrics, f, indent=2)
         
         # Display results
-        console.print("\n[bold]Evaluation Results:[/bold]")
+        logger.info("\n[bold]Evaluation Results:[/bold]")
         for metric, value in metrics.items():
-            console.print(f"{metric}: {value:.4f}")
+            logger.info(f"{metric}: {value:.4f}")
         
     except Exception as e:
         logger.error(f"Error during evaluation: {e}", exc_info=True)
@@ -141,14 +149,20 @@ def evaluate(
 def visualize(
     sample_token: str = typer.Argument(..., help="NuScenes sample token to visualize"),
     prediction_path: Path = typer.Argument(..., help="Path to prediction JSON file"),
-    config_path: str = typer.Option("config", help="Path to config directory"),
-    output_path: Optional[Path] = typer.Option(None, help="Path to save visualization"),
+    output_path: Optional[Path] = typer.Option(
+        "outputs/visualization/vis.png",
+        help="Path to save visualization"
+    ),
 ):
     """Visualize predictions for a sample"""
     # Load config and setup logging
-    cfg = load_config(config_path)
+    cfg = load_config()
     setup_logger(cfg.logging)
     logger = logging.getLogger(__name__)
+
+    logger.info(f"Visualizing sample: {sample_token}")
+    logger.info(f"Prediction path: {prediction_path}")
+    logger.info(f"Output path: {output_path}")
     
     try:
         # Load prediction
