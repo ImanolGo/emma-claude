@@ -25,14 +25,16 @@ model:
 visualization:
   save_output: true
   plot_ground_truth: true
-  max_range: 50  # meters
   colors:
     trajectory: "#2ecc71"
-    ground_truth: "#e74c3c"
+    gt_trajectory: "#e74c3c"
     vehicle: "#3498db"
     pedestrian: "#f1c40f"
     cyclist: "#9b59b6"
     ego: "#2c3e50"
+  max_range: 50
+  fig_size: [20, 10]
+  dpi: 300
 
 logging:
   version: 1

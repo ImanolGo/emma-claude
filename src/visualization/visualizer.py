@@ -13,19 +13,20 @@ logger = logging.getLogger(__name__)
 class EMMAVisualizer:
     """Visualization tools for EMMA predictions"""
     
-    def __init__(self):
-        self.colors = {
+    def __init__(self, cfg: Optional[Dict] = None):
+        self.colors = cfg.get('colors', {
             'trajectory': '#2ecc71',    # Green for predicted trajectory
             'gt_trajectory': '#e74c3c',  # Red for ground truth
             'vehicle': '#3498db',       # Blue for vehicles
             'pedestrian': '#f1c40f',    # Yellow for pedestrians
             'cyclist': '#9b59b6',       # Purple for cyclists
             'ego': '#2c3e50'           # Dark blue for ego vehicle
-        }
+        }) if cfg else {}
         
-        # Default visualization settings
-        self.max_range = 50  # meters
-        self.fig_size = (20, 10)
+        # Default visualization settings from config
+        self.max_range = cfg.get('max_range', 50)  # meters
+        self.fig_size = cfg.get('fig_size', (20, 10))
+        self.dpi = cfg.get('dpi', 300)
         
     def visualize_prediction(self,
                            front_image: np.ndarray,

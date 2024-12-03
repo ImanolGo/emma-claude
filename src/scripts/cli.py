@@ -52,7 +52,7 @@ def predict(
             model_version=cfg.model.version
         )
         
-        visualizer = EMMAVisualizer()
+        visualizer = EMMAVisualizer(cfg.visualization)
         
         # Process sample
         with console.status("Processing sample..."):
@@ -175,7 +175,7 @@ def visualize(
             version=cfg.data.version
         )
         
-        visualizer = EMMAVisualizer()
+        visualizer = EMMAVisualizer(cfg.visualization)
         
         # Get sample data
         data = nusc_loader.get_sample_data(sample_token)
