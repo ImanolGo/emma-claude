@@ -6,7 +6,7 @@ import json
 from anthropic import Anthropic
 from tqdm import tqdm
 
-from data.nuscenes_loader import NuScenesLoader
+from data.nuimages_loader import NuImagesLoader
 from utils.geometry import calculate_metrics
 
 logger = logging.getLogger(__name__)
@@ -79,7 +79,7 @@ class ClaudeEMMA:
     
     def evaluate_samples(
         self,
-        nusc_loader: NuScenesLoader,
+        nuim_loader: NuImagesLoader,
         num_samples: int,
         output_dir: Optional[Path] = None
     ) -> Dict[str, float]:
@@ -88,7 +88,7 @@ class ClaudeEMMA:
         """
         metrics_list = []
         
-        for sample in tqdm(nusc_loader.get_samples(num_samples)):
+        for sample in tqdm(nuim_loader.get_samples(num_samples)):
             # Get prediction
             prediction = self.predict_trajectory(
                 camera_images=sample['images'],

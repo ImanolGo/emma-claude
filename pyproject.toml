@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [tool.black]
 line-length = 88
-target-version = ['py38']
+target-version = ['py310']
 include = '\.pyi?$'
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.10"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
@@ -21,6 +21,6 @@ testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 88
-target-version = "py38"
+target-version = "py310"
 select = ["E", "F", "B", "I"]
 ignore = ["E402", "E501"]

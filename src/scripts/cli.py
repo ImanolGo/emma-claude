@@ -9,7 +9,7 @@ import hydra
 from omegaconf import DictConfig, OmegaConf
 import json
 
-from data.nuscenes_loader import NuScenesLoader
+from data.nuimages_loader import NuImagesLoader
 from model.emma import ClaudeEMMA
 from visualization.visualizer import EMMAVisualizer
 from utils.logger import setup_logger
@@ -42,8 +42,8 @@ def predict(
 
     try:
         # Initialize components
-        nusc_loader = NuScenesLoader(
-            dataroot=cfg.data.nuscenes_root,
+        nuim_loader = NuImagesLoader(
+            dataroot=cfg.data.nuimages_root,
             version=cfg.data.version
         )
         
@@ -56,7 +56,7 @@ def predict(
         
         # Process sample
         with console.status("Processing sample..."):
-            data = nusc_loader.get_sample_data(sample_token)
+            data = nuim_loader.get_sample_data(sample_token)
             prediction = emma.predict_trajectory(
                 camera_images=data.images,
                 ego_history=data.ego_history,
@@ -111,8 +111,8 @@ def evaluate(
     
     try:
         # Initialize components
-        nusc_loader = NuScenesLoader(
-            dataroot=cfg.data.nuscenes_root,
+        nuim_loader = NuImagesLoader(
+            dataroot=cfg.data.nuimages_root,
             version=cfg.data.version
         )
         
@@ -124,7 +124,7 @@ def evaluate(
         # Run evaluation
         with console.status(f"Evaluating {num_samples} samples...") as status:
             metrics = emma.evaluate_samples(
-                nusc_loader=nusc_loader,
+                nuim_loader=nuim_loader,
                 num_samples=num_samples,
                 output_dir=output_dir
             )
@@ -170,15 +170,15 @@ def visualize(
             prediction = json.load(f)
         
         # Initialize components
-        nusc_loader = NuScenesLoader(
-            dataroot=cfg.data.nuscenes_root,
+        nuim_loader = NuImagesLoader(
+            dataroot=cfg.data.nuimages_root,
             version=cfg.data.version
         )
         
         visualizer = EMMAVisualizer(cfg.visualization)
         
         # Get sample data
-        data = nusc_loader.get_sample_data(sample_token)
+        data = nuim_loader.get_sample_data(sample_token)
         
         # Create visualization
         visualizer.visualize_prediction(

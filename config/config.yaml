@@ -10,7 +10,7 @@ hydra:
     subdir: ${hydra.job.num}
 
 data:
-  nuscenes_root: ${oc.env:NUSCENES_DATAROOT}
+  nuimages_root: ${oc.env:NUIMAGES_DATAROOT}
   version: "v1.0-mini"
   history_seconds: 2
   future_seconds: 3

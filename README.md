@@ -71,7 +71,7 @@ cp .env.example .env
 
 Required environment variables:
 - `ANTHROPIC_API_KEY`: Your Claude API key
-- `NUSCENES_DATAROOT`: Path to your nuScenes dataset
+- `NUIMAGES_DATAROOT`: Path to your nuScenes dataset
 
 ## Development Environment
 
@@ -155,7 +155,7 @@ After downloading, your data directory should look like this:
 
 4. Update your `.env` file with the dataset path:
 ```bash
-NUSCENES_DATAROOT={WORSPACE_DIR}/data/sets/nuimages
+NUIMAGES_DATAROOT={WORSPACE_DIR}/data/sets/nuimages
 ```
 
 ### Verifying the Installation
@@ -166,7 +166,7 @@ Install and test the nuscenes-devkit:
 uv pip install nuscenes-devkit
 
 # Verify setup (in python)
-from nuscenes import NuImages
+from nuimages import NuImages
 nusc = NuImages(version='v1.0-mini', dataroot='{WORSPACE_DIR}/data/sets/nuimages', verbose=True, lazy=True)
 ```
 
@@ -195,16 +195,16 @@ python -m src.scripts.cli visualize sample_token_123 predictions/sample_123.json
 
 ```python
 from src.model.emma import ClaudeEMMA
-from src.data.nuscenes_loader import NuScenesLoader
+from src.data.nuimages_loader import NuImagesLoader
 from src.visualization.visualizer import EMMAVisualizer
 
 # Initialize components
 emma = ClaudeEMMA(api_key="your-api-key")
-nusc_loader = NuScenesLoader(dataroot="path/to/nuscenes")
+nuim_loader = NuImagesLoader(dataroot="path/to/nuimages")
 visualizer = EMMAVisualizer()
 
 # Process a sample
-sample_data = nusc_loader.get_sample_data(sample_token)
+sample_data = nuim_loader.get_sample_data(sample_token)
 prediction = emma.predict_trajectory(
     camera_images=sample_data.images,
     ego_history=sample_data.ego_history,
