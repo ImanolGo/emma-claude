@@ -102,7 +102,6 @@ def evaluate(
     """Run evaluation on multiple samples"""
     # Load config and setup logging
     cfg = load_config()
-    setup_logger(cfg.logging)
     logger = logging.getLogger(__name__)
 
     logger.info(f"Evaluating {num_samples} samples")
@@ -157,7 +156,6 @@ def visualize(
     """Visualize predictions for a sample"""
     # Load config and setup logging
     cfg = load_config()
-    setup_logger(cfg.logging)
     logger = logging.getLogger(__name__)
 
     logger.info(f"Visualizing sample: {sample_token}")
