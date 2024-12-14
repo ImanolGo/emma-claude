@@ -20,17 +20,17 @@ Please analyze this driving scene and provide:
 4. Provide a trajectory as 6 (x,y) coordinates at 0.5s intervals, representing a safe path for the next 3 seconds.
 
 Format your response as a JSON object with these exact keys:
-{
+{{
     "scene_description": "string",
     "critical_objects": [
-        {
+        {{
             "type": "string",
             "position": [x, y],
             "velocity": [vx, vy]
-        }
+        }}
     ],
     "reasoning": "string",
     "trajectory": [[x1, y1], [x2, y2], ...]
-}
+}}
 
 Ensure all coordinates are in meters and formatted to 2 decimal places.
